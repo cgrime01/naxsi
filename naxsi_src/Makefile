@@ -10,8 +10,8 @@ CAK		:=
 COV 		?= 1
 
 #Allows to force for specific UT only
-#TEST 		:= "29*.t"
-NGINX_VERS := "1.9.11"
+#TEST 		:= ""
+NGINX_VERS := "1.10.0"
 
 NGINX_OPTIONS="--error-log-path=/tmp/naxsi_ut/error.log"
 NGINX_OPTIONS+="--conf-path=/tmp/naxsi_ut/nginx.conf"
@@ -26,6 +26,7 @@ NGINX_OPTIONS+="--with-http_ssl_module"
 NGINX_OPTIONS+="--without-mail_pop3_module"
 NGINX_OPTIONS+="--without-mail_smtp_module"
 NGINX_OPTIONS+="--without-mail_imap_module"
+NGINX_OPTIONS+="--with-http_v2_module"
 NGINX_OPTIONS+="--without-http_uwsgi_module"
 NGINX_OPTIONS+="--without-http_scgi_module"
 NGINX_OPTIONS+="--add-dynamic-module=$(MOD_PATH)"
@@ -70,6 +71,7 @@ install:
 deploy: 
 	@cp ./nginx.conf.example /tmp/naxsi_ut/nginx.conf
 	@cp ../naxsi_config/naxsi_core.rules /tmp/naxsi_ut/naxsi_core.rules
+	@openssl req -batch -x509 -nodes -days 365 -newkey rsa:2048 -keyout /tmp/nginx.key -out /tmp/nginx.crt
 
 
 # RUN UNIT TESTS
